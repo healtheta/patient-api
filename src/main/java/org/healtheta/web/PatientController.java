@@ -63,7 +63,7 @@ public class PatientController {
 
     @RequestMapping(value = "/read/{id}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public ResponseEntity<?> read(String id){
+    public ResponseEntity<?> read(@PathVariable String id){
         try{
             Long lId = Long.parseLong(id);
             Patient patient = patientRepo.findPatientById(lId);
@@ -72,6 +72,7 @@ public class PatientController {
             else
                 return new ResponseEntity<OperationOutcome>(OperationOutcome.RecordNotFound(), HttpStatus.NOT_FOUND);
         }catch(Exception e){
+            System.out.println(e.getMessage());
             return new ResponseEntity<OperationOutcome>(OperationOutcome.InternalError(), HttpStatus.BAD_REQUEST);
         }
     }
@@ -110,6 +111,7 @@ public class PatientController {
         if ( familyName != null && givenName != null){
             //do family;given name search
             List<HumanName> humanNameList = humanNameRepo.findHumanNameByFamilyAndGiven(familyName, givenName);
+            System.out.println(humanNameList.size());
             List<Patient> patientList = patientRepo.findByNameIn(humanNameList);
             return new ResponseEntity<List>(patientList, HttpStatus.NOT_FOUND);
         }
@@ -144,5 +146,21 @@ public class PatientController {
         }else{
             return new ResponseEntity<OperationOutcome>(OperationOutcome.OperationNotSupported(), HttpStatus.OK);
         }
+    }
+
+    @RequestMapping(value = "/test",
+            method = RequestMethod.GET,
+            produces = "application/json")
+    @ResponseBody
+    public ResponseEntity<?> test(){
+        Patient patient =  new Patient();
+        Identifier identifier = new Identifier();
+        identifier.setValue("999999999");
+        patient.setIdentifier(identifier);
+        HumanName name = new HumanName();
+        name.setFamily("Doe");
+        name.setGiven("John");
+        patient.setName(name);
+        return new ResponseEntity<Patient>(patient, HttpStatus.OK);
     }
 }
