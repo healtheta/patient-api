@@ -77,6 +77,10 @@ public class Patient implements Serializable{
     private Reference managingOrganization;
 
     @OneToOne(fetch = FetchType.LAZY, cascade =  CascadeType.ALL)
+    @JoinColumn(name = "_reference")
+    private Reference reference;
+
+    @OneToOne(fetch = FetchType.LAZY, cascade =  CascadeType.ALL)
     @JoinColumn(name = "_link")
     private PatientLink link;
 
@@ -148,6 +152,10 @@ public class Patient implements Serializable{
         this.link = link;
     }
 
+    public void setReference(Reference reference) {
+        this.reference = reference;
+    }
+
     public Long getId() {
         return id;
     }
@@ -214,6 +222,10 @@ public class Patient implements Serializable{
 
     public PatientLink getLink() {
         return link;
+    }
+
+    public Reference getReference() {
+        return reference;
     }
 }
 
