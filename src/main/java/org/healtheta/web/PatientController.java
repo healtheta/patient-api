@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 @RestController
-@RequestMapping(value = "/patient")
+@RequestMapping(value = "/")
 public class PatientController {
     @Autowired
     private PatientRepo patientRepo;
